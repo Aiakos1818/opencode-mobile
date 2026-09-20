@@ -12,7 +12,6 @@ import {
   Modal,
   TextInput,
   Alert,
-  KeyboardAvoidingView,
   Platform,
   Linking,
 } from "react-native"
@@ -26,6 +25,7 @@ import { useCatalog } from "../../src/stores/catalog"
 import type BottomSheet from "@gorhom/bottom-sheet"
 import type { Session, Project } from "../../src/lib/sdk"
 import { DirectorySwitcher, DirectoryBrowserSheet } from "../../src/components/chat"
+import { KeyboardAvoider } from "../../src/components/KeyboardAvoider"
 import { groupByDirectory } from "../../src/lib/session-grouping"
 import { UpdateBanner } from "../../src/components/UpdateBanner"
 import { nameOf } from "../../src/lib/path-utils"
@@ -596,7 +596,7 @@ export default function SessionsScreen() {
 
       {/* New Session Info Modal */}
       <Modal visible={showNewSession} animationType="slide" transparent>
-        <KeyboardAvoidingView style={styles.modalOverlay} behavior={Platform.OS === "ios" ? "padding" : "height"}>
+        <KeyboardAvoider style={styles.modalOverlay} behavior={Platform.OS === "ios" ? "padding" : "height"}>
           <TouchableOpacity style={styles.modalDismiss} activeOpacity={1} onPress={() => setShowNewSession(false)} />
           <View style={[styles.modalContent, isDark && styles.modalContentDark]}>
             <View style={styles.modalHeader}>
@@ -811,12 +811,12 @@ export default function SessionsScreen() {
               )}
             </View>
           </View>
-        </KeyboardAvoidingView>
+        </KeyboardAvoider>
       </Modal>
 
       {/* Rename modal */}
       <Modal visible={!!renaming} animationType="fade" transparent>
-        <KeyboardAvoidingView
+        <KeyboardAvoider
           style={[styles.modalOverlay, { justifyContent: "center" }]}
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
@@ -850,7 +850,7 @@ export default function SessionsScreen() {
             </View>
           </View>
           <TouchableOpacity style={styles.modalDismiss} activeOpacity={1} onPress={() => setRenaming(null)} />
-        </KeyboardAvoidingView>
+        </KeyboardAvoider>
       </Modal>
 
       {/* Directory switcher bottom sheet */}

@@ -7,8 +7,6 @@ import {
   TouchableOpacity,
   StyleSheet,
   useColorScheme,
-  KeyboardAvoidingView,
-  Platform,
   ActivityIndicator,
   Alert,
 } from "react-native"
@@ -34,6 +32,7 @@ import {
   type Attachment,
 } from "../../src/components/chat"
 import { useSessions } from "../../src/stores/sessions"
+import { KeyboardAvoider } from "../../src/components/KeyboardAvoider"
 import { useEvents, refreshPending } from "../../src/stores/events"
 import { useConnections } from "../../src/stores/connections"
 import { useAuth } from "../../src/stores/auth"
@@ -591,7 +590,7 @@ export default function SessionScreen() {
         }}
       />
 
-      <KeyboardAvoidingView
+      <KeyboardAvoider
         style={[s.container, isDark && s.containerDark]}
         // Both platforms use "padding" so the composer/toolbar is pushed up
         // above the keyboard via JS-measured keyboard height.
@@ -604,9 +603,10 @@ export default function SessionScreen() {
         // handled dynamically — so adjustResize became a no-op and the
         // bottom toolbar + input were left completely hidden behind the
         // keyboard (#147). "padding" restores avoidance without depending
-        // on native resize.
+        // on native resize (#147 follow-up: RN's own KeyboardAvoidingView
+        // still computed 0 here, hence KeyboardAvoider).
         behavior="padding"
-        keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
+        keyboardVerticalOffset={90}
       >
         {/* Session info pulldown */}
         <SessionInfo
@@ -838,7 +838,7 @@ export default function SessionScreen() {
             )}
           </View>
         </View>
-      </KeyboardAvoidingView>
+      </KeyboardAvoider>
 
       {/* Model picker bottom sheet */}
       <ModelPicker
